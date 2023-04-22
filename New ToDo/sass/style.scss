@@ -1,0 +1,202 @@
+ body{
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-image: linear-gradient(blueviolet,violet);
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    ul{
+        li{
+            list-style: none;
+        }
+    }
+    a{
+        text-decoration: none;
+    }
+    .card-body{
+        width: 350px;
+        height: auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        .warning{
+            width: 80%;
+            height: auto;
+            padding: 15px;
+            background-color: #fff3cd;
+            color: #664d03;
+            text-align: center;
+            border-radius: 5px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all .3s;
+        }
+        h3{
+            font-size: 25px;
+            color: blueviolet;
+            margin-bottom: 20px;
+        }
+        .writing{
+            width: 100%;
+            height: 40px;
+            padding: 10px 0 10px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: .5px solid rgba(199, 141, 253, 0.336) ;
+            border-radius: 48px 48px;
+            margin-bottom: 30px;
+            label{
+                width: 75%;
+                height: 100%;
+                #value{
+                    border: none;
+                    outline: none;
+                    width: 100%;
+                    height: 100%;
+                    padding-left:10px;
+                }
+            }
+            button{
+                width: 25%;
+                height: 100%;
+                border-radius: 48px 48px;
+                outline: none;
+                padding: 9px 20px 27px 20px;
+                text-align: center;
+                border: none;
+                background-color: rgb(122, 73, 169);
+                color: #fff;
+                font-size: 16px;
+                transition: all .2s ease;
+                &:hover{
+                    background-color:rgb(102, 37, 163) ;
+                }
+            }
+        }
+        .list-con{
+            margin-bottom: 30px;
+           li{
+            background-color: #fff;
+            padding: 15px 15px 15px 40px;
+            margin: 5px;
+            position: relative;
+            border: .2px solid rgba(137, 43, 226, 0.386);
+            border-radius: 48px;
+            font-size: 15px;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
+            button{
+                border: none;
+                outline: none;
+                position: absolute;
+                top: 14px;
+                right: 15px;
+                width: auto;
+                padding: 3px 4px;
+                background-color: blueviolet;
+                opacity: 0.75;
+                color: #fff;
+                border-radius: 4px;
+                z-index: 10000;
+            }
+            .inp{
+                border: none;
+                outline: none;
+            }
+            i{
+                position: absolute;
+                top: 10.5px;
+                right: 40px;
+                font-size: 13px;
+                color: rgba(128, 0, 128, 0.682);
+                cursor: pointer;
+                transition: all .4s;
+                cursor: pointer;
+                text-align: center;
+                padding: 8px;
+                border-radius: 50%;
+                &:hover{
+                    background-color: rgba(128, 0, 128, 0.189);
+                }
+            }
+            span{
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                padding: 3px 9px;
+                text-align: center;
+                font-size: 23px;
+                border-radius: 50%;
+                color: blueviolet;
+                transition: all .4s;
+                cursor: pointer;
+                &:hover{
+                    background-color: rgba(128, 0, 128, 0.189);
+                }
+            }
+            &::before{
+                position: absolute;
+                top: 14px;
+                left: 9px;
+                content: '';
+                width: 18px;
+                height: 18px;
+                background-color: transparent;
+                border: 1px solid gray;
+                border-radius: 50%;
+                background-size: 18px;
+                background-position: center;
+                transition: all 400ms;
+                background-repeat: no-repeat;
+            }
+           }
+           .checked{
+            color: gray;
+            text-decoration: line-through;
+            font-size: 20px;
+            &::before{
+                top: 14px;
+                background-image:url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Eo_circle_purple_white_checkmark.svg/2048px-Eo_circle_purple_white_checkmark.svg.png") ;
+                padding-bottom: 0;
+            }
+           }
+        }
+        .clear-all{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            button{
+                border: none;
+                outline: none;
+                background-color: purple;
+                border-radius: 7px;
+                padding: 8px 10px;
+                color: #fff;
+                font-weight: 500;
+                transition: all .2s ease-in;
+                font-size: 15px;
+                &:hover{
+                    background-color: rgb(108, 1, 108);
+                }
+            }
+        }   
+    }
+}
+// .checked{
+//     font-size: 13px !important;
+// }
+.inp-edit{
+    text-decoration: line-through;
+    // font-size: 13px;
+}

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <!-- <link rel="stylesheet" href="styles.css"> -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <style>* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+   }
+   
+   body {
+      background: linear-gradient(to right, #000336, #0b8793,#87b0b4);
+      font-family: sans-serif;
+   }
+   
+   .container {
+      width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+   }
+   
+   .todo_form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-top: 32px;
+      background-color: rgb(211, 238, 236);
+   }
+   
+   .todo_title {
+      font-size: 2.5rem;
+      color: rgb(65, 131, 178);
+   }
+   
+   .todo_div {
+      display: flex;
+      margin-top: 16px;
+   }
+   
+   .todo_input {
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      border-radius: 4px 0 0 4px;
+      border: none;
+      outline: none;
+   }
+   
+   .todo_btn {
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      border-radius: 0 4px 4px 0;
+      border: none;
+      outline: none;
+      background-color: aliceblue;
+      cursor: pointer;
+      transition: 0.3s ease all;
+   }
+   
+   .todo_btn:hover {
+      background-color: rgb(208, 225, 240);
+   }
+   
+   .todo_container {
+      display: flex;
+      flex-direction: column;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-top: 16px;
+      background-color: rgb(215, 223, 250);
+   }
+   
+   .todo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgb(171, 212, 228);
+   }
+   
+   .todo:last-child { 
+      border: none;
+   }
+   
+   .todo_left {
+      position: relative;
+      display: flex;
+      align-items: center;
+   }
+   
+   .todo_editInput {
+      position: absolute;
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      border-radius: 4px 0 0 4px;
+      border: none;
+      outline: none;
+      opacity: 0;
+      pointer-events: none;
+   }
+   
+   .todo_text, .todo_edit {
+      margin-left: 8px;
+   }
+   
+   .todo_cb:checked ~ .todo_text {
+      text-decoration: line-through;
+      color: rgb(128, 128, 128);
+   }
+   
+   .todo_right {
+      position: relative;
+   }
+   
+   .todo_delete {
+      background-color: rgb(232, 160, 148);
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      color: white;
+      border-radius: 4px 4px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: 0.3s ease all;
+   }
+   
+   .todo_delete:hover {
+      background-color: rgb(237, 205, 157);
+   }
+   
+   .todo_edit {
+      background-color: rgb(101, 160, 215);
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      color: white;
+      border-radius: 4px 4px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: 0.3s ease all;
+   }
+   
+   .todo_edit:hover {
+      background-color: rgb(143, 190, 215);
+   }
+   
+   .todo_save {
+      position: absolute;
+      right: 0;
+      background-color: rgb(61, 164, 224);
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      color: white;
+      border-radius: 4px 4px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: 0.3s ease all;
+      opacity: 0;
+      pointer-events: none;
+   }
+   
+   .todo_save:hover {
+      background-color: rgb(65, 147, 194);
+   }
+   
+   .todo.-edited .todo_left *, .todo.-edited .todo_right * {
+      opacity: 0;
+      pointer-events: none;
+   }
+   
+   .todo.-edited .todo_left .todo_editInput, .todo.-edited .todo_right .todo_save {
+      opacity: 1;
+      pointer-events: all;
+   }</style>
+</head>
+<body>
+   <div class="container">
+      <form class="todo_form">
+         <h1 class="todo_title">ToDo List</h1>
+         <div class="todo_div">
+            <input type="text" class="todo_input" placeholder="Add todo..">
+            <button type="submit" class="todo_btn">+</button>
+         </div>
+      </form>
+      <div class="todo_container"></div>
+   </div>
+
+   <!-- <script src="app.js"></script> -->
+<script>const form = document.querySelector(".todo_form");
+   const input = document.querySelector(".todo_input");
+   const todo_container = document.querySelector(".todo_container");
+   
+   const startConf = () => {
+      const todos = JSON.parse(localStorage.getItem("todos"));
+      if (!todos) {
+         localStorage.setItem("todos", JSON.stringify([]));
+      } else {
+         todos.forEach(todo => {
+            addHTML(todo);
+         });
+      } 
+   }
+   
+   const addTodo = (e) => {
+      e.preventDefault();
+      
+      const inputVal = input.value;
+   
+      if (inputVal == '')  { 
+         input.style.border = '1px solid tomato';
+         setTimeout(() => {
+            input.style.borderColor = 'transparent';
+         }, 2500);
+         return false;
+      }
+   
+      const todo = {
+         text: inputVal,
+         isCompleted: false,
+      };
+   
+      const todos = JSON.parse(localStorage.getItem("todos"));
+      todos.push(todo);
+      localStorage.setItem("todos", JSON.stringify(todos));
+   
+      addHTML(todo);
+   
+      form.reset();
+   }
+   
+   const deleteTodo = (e) => {
+      const todo = e.target.parentElement.parentElement;
+      const text = todo.firstChild.children[1].textContent;
+   
+      let todos = JSON.parse(localStorage.getItem("todos"));
+      todos = todos.filter(td => td.text != text);
+      localStorage.setItem("todos", JSON.stringify(todos));
+   
+      todo.remove();
+   }
+   
+   const completeTodo = (e) => {
+      const todo = e.target.parentElement.parentElement;
+      const text = todo.firstChild.children[1].textContent;
+   
+      let todos = JSON.parse(localStorage.getItem("todos"));
+      
+      todos.forEach(td => {
+         if (td.text === text) td.isCompleted = !td.isCompleted 
+      });
+   
+      localStorage.setItem("todos", JSON.stringify(todos));
+   }
+   
+   const saveTodo = (e) => {
+      const todo = e.target.parentElement.parentElement;
+      const prevText = todo.firstChild.children[1].textContent; 
+      const newText = todo.firstChild.children[2].value; 
+   
+      let todos = JSON.parse(localStorage.getItem("todos"));
+      
+      todos.forEach(td => {
+         if (td.text === prevText) td.text = newText;
+      });
+   
+      localStorage.setItem("todos", JSON.stringify(todos));
+   
+      todo.firstChild.children[1].textContent = newText;  
+   
+      todo.classList.remove("-edited"); 
+   }
+   
+   const editTodo = (e) => {
+      const todo = e.target.parentElement.parentElement;
+      todo.classList.add("-edited");
+   }
+   
+   const addHTML = (todo) => {
+      const todoDiv = document.createElement("div");
+      todoDiv.classList.add("todo");
+   
+      const todoLeft = document.createElement("div");
+      todoLeft.classList.add("todo_left");
+      
+      const editInput = document.createElement("input");
+      editInput.classList.add("todo_editInput")
+      editInput.defaultValue = todo.text;
+   
+      const todoCb = document.createElement("input");
+      todoCb.type = "checkbox";
+      todoCb.checked = todo.isCompleted; 
+      todoCb.classList.add("todo_cb");
+      todoCb.addEventListener("click", completeTodo); 
+   
+      const todoText = document.createElement("span");
+      todoText.classList.add("todo_text");
+      todoText.textContent = todo.text;
+   
+      todoLeft.appendChild(todoCb);
+      todoLeft.appendChild(todoText);
+      todoLeft.appendChild(editInput);
+   
+      const todoRight = document.createElement("div");
+      todoRight.classList.add("todo_right");
+   
+      const deleteBtn = document.createElement("button");
+      deleteBtn.classList.add("todo_delete");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", deleteTodo); 
+      
+      const editBtn = document.createElement("button");
+      editBtn.classList.add("todo_edit");
+      editBtn.textContent = "Edit";
+      editBtn.addEventListener("click", editTodo); 
+      
+      const saveBtn = document.createElement("button");
+      saveBtn.classList.add("todo_save");
+      saveBtn.textContent = "Save";
+      saveBtn.addEventListener("click", saveTodo);
+   
+      todoRight.appendChild(deleteBtn);
+      todoRight.appendChild(editBtn);
+      todoRight.appendChild(saveBtn);
+   
+      todoDiv.appendChild(todoLeft);
+      todoDiv.appendChild(todoRight);
+   
+      todo_container.appendChild(todoDiv);
+   }
+   
+   startConf();
+   
+   form.addEventListener("submit", addTodo);</script>
+</body>
+</html>
